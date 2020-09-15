@@ -11,6 +11,8 @@ class PWM():
                 PWM.RMT_channels[idx] = True;                  # mark used cnannel
                 self.RMT_channel = idx                         # keep the channel number
                 self.RMT_obj = RMT(idx, pin=pwm_pin, clock_div=80)
+                self.pwm_duty = 512
+                self.pwm_freq = 5000
                 self.init(freq, duty)
                 break
         else:
@@ -18,8 +20,8 @@ class PWM():
         
     def run(self):
         period = 1000000 / (self.pwm_freq)
-        up_time = int(period * (self.pwm_duty / 1023))
-        down_time = int(period) - up_time
+        up_time = round(period * (self.pwm_duty / 1023))
+        down_time = round(period) - up_time
         self.RMT_obj.loop(False)
         self.RMT_obj.write_pulses((up_time, down_time), start=1)
         self.RMT_obj.loop(True)
@@ -42,5 +44,3 @@ class PWM():
     def init(self, freq=5000, duty=512):
         self.freq(freq)
         self.duty(duty)
-
-
