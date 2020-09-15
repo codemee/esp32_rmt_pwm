@@ -18,3 +18,4 @@ This library defines a PWM class with the same interface of the PWM class in the
 >>> p25.deinit()
 ```
 
+Note that the frequency is limited to 16~5000000Hz due to the clock divider we choose for RMT is 80. The time click therefore is 1000000us / (80MHz / 80) = 1us. The longest pulse width is 1us × 32767 × 2 = 65534us. So the minimum frequency is 1000000us / 65534us ≒ 16Hz.
