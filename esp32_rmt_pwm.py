@@ -2,13 +2,14 @@ from machine import Pin
 from esp32 import RMT
 
 class PWM():
+    # free RMT channel table
     RMT_channels = [False, False, False, False, False, False, False, False]
     
     def __init__(self, pwm_pin, freq=5000, duty=512):
         for idx in range(len(PWM.RMT_channels)):
             if not PWM.RMT_channels[idx]:                      # find free channel
                 PWM.RMT_channels[idx] = True;                  # mark used cnannel
-                self.RMT_channel = idx                     # keep the channel number
+                self.RMT_channel = idx                         # keep the channel number
                 self.RMT_obj = RMT(idx, pin=pwm_pin, clock_div=80)
                 self.init(freq, duty)
                 break
@@ -27,7 +28,7 @@ class PWM():
         self.RMT_obj.write_pulses((up_time, down_time), start=1)
         
     def freq(self, new_freq):
-        self.pwm_freq = new_freq
+        self.pwm_freq = new_freq if new_freq > 15 else 16
         self.run()
         
     def duty(self, new_duty):
@@ -39,7 +40,7 @@ class PWM():
         PWM.RMT_channels[self.RMT_channel] = False
     
     def init(self, freq=5000, duty=512):
-        self.pwm_freq = freq
+        self.freq(freq)
         self.duty(duty)
 
 
