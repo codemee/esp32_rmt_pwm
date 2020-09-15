@@ -7,4 +7,14 @@ Fortunately, there's a technique names [RMT](http://docs.micropython.org/en/late
 
 This library defines a PWM class with the same interface of the PWM class in the MicroPython library. You can port existed scripts without any trouble. 
 
+### Usage
+
+```python
+>>> from machine import Pin
+>>> from esp32_rmt_pwm import PWM
+>>> p25 = PWM(Pin(25))
+>>> p25.freq(261)
+>>> p25.duty(768)
+>>> p25.deinit()
+```
 
